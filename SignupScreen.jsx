@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-import { useState } from "react";
-import { View, TextInput, Button, Alert } from "react-native";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./firebase";
-=======
-// SignupScreen.jsx
 import { useState } from "react";
 import {
   View,
@@ -13,29 +6,21 @@ import {
   TouchableOpacity,
   Alert,
   StyleSheet,
-  ImageBackground, // ✅ added
+  ImageBackground,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient"; // ✅ gradient overlay
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "./firebase";
-import { Asset } from "expo-asset"; // ✅ to load local image
->>>>>>> 2e291b8a7 (MyShelf 0.1)
+import { Asset } from "expo-asset";
 
 export default function SignupScreen({ navigation }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-<<<<<<< HEAD
-
-  const handleSignup = async () => {
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      Alert.alert("Account Created", "You can now sign in.");
-      navigation.replace("Signin"); // ✅ Go back to Signin
-=======
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const bgImage = Asset.fromModule(require("./assets/splash.jpg")).uri; // ✅ background image
+  const bgImage = Asset.fromModule(require("./assets/splash.jpg")).uri;
 
   const handleSignup = async () => {
     if (!fname || !lname || !email || !password) {
@@ -56,7 +41,7 @@ export default function SignupScreen({ navigation }) {
       );
       const user = userCredential.user;
 
-      // ✅ Save profile to Firestore
+      // Save profile to Firestore
       await setDoc(doc(db, "users", user.uid), {
         firstName: fname,
         lastName: lname,
@@ -66,60 +51,42 @@ export default function SignupScreen({ navigation }) {
 
       Alert.alert("Account Created", "You can now sign in.");
       navigation.replace("Signin");
->>>>>>> 2e291b8a7 (MyShelf 0.1)
     } catch (error) {
       Alert.alert("Signup Failed", error.message);
     }
   };
 
   return (
-<<<<<<< HEAD
-    <View style={{ padding: 20 }}>
-      <TextInput
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        style={{ borderWidth: 1, marginVertical: 10, padding: 8 }}
-      />
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        style={{ borderWidth: 1, marginVertical: 10, padding: 8 }}
-      />
-      <Button title="Sign Up" onPress={handleSignup} />
-      <Button title="Back to Sign In" onPress={() => navigation.goBack()} />
-    </View>
-  );
-}
-=======
-    <ImageBackground
-      source={{ uri: bgImage }}
-      style={{ flex: 1 }}
-      resizeMode="cover"
-    >
-      <View style={styles.overlay}>
+    <ImageBackground source={{ uri: bgImage }} style={styles.bg} resizeMode="cover">
+      {/* Gradient overlay for contrast */}
+      <LinearGradient
+        colors={["rgba(0,0,0,0.65)", "rgba(0,0,0,0.25)"]}
+        style={styles.overlay}
+      >
+        {/* Glass card */}
         <View style={styles.card}>
           <Text style={styles.title}>Create Account ✨</Text>
           <Text style={styles.subtitle}>
-            Join us and start managing inventory
+            Join us and start managing your inventory
           </Text>
 
           <TextInput
             placeholder="First name"
+            placeholderTextColor="rgba(255,255,255,0.7)"
             value={fname}
             onChangeText={setFname}
             style={styles.input}
           />
           <TextInput
             placeholder="Last name"
+            placeholderTextColor="rgba(255,255,255,0.7)"
             value={lname}
             onChangeText={setLname}
             style={styles.input}
           />
           <TextInput
             placeholder="Email"
+            placeholderTextColor="rgba(255,255,255,0.7)"
             value={email}
             onChangeText={setEmail}
             autoCapitalize="none"
@@ -128,6 +95,7 @@ export default function SignupScreen({ navigation }) {
           />
           <TextInput
             placeholder="Password"
+            placeholderTextColor="rgba(255,255,255,0.7)"
             value={password}
             onChangeText={setPassword}
             secureTextEntry
@@ -148,74 +116,78 @@ export default function SignupScreen({ navigation }) {
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </LinearGradient>
     </ImageBackground>
   );
 }
 
-// ✅ Styles
+// 🎨 Styles
 const styles = StyleSheet.create({
+  bg: {
+    flex: 1,
+  },
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(255,255,255,0.1)", // semi-transparent overlay
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
   },
   card: {
     width: "100%",
-    backgroundColor: "rgba(255,255,255,0.85)", // semi-transparent card
-    borderRadius: 16,
-    padding: 25,
+    backgroundColor: "rgba(255,255,255,0.15)", // ✅ glassmorphism
+    borderRadius: 20,
+    padding: 28,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.25)",
     shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    elevation: 8,
   },
   title: {
-    fontSize: 26,
+    fontSize: 28,
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: 6,
-    color: "#333",
+    marginBottom: 8,
+    color: "#fff",
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: 15,
     textAlign: "center",
-    marginBottom: 20,
-    color: "#666",
+    marginBottom: 22,
+    color: "rgba(255,255,255,0.85)",
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 15,
-    backgroundColor: "rgba(255,255,255,0.9)",
+    borderColor: "rgba(255,255,255,0.35)",
+    borderRadius: 12,
+    padding: 14,
+    marginBottom: 16,
+    backgroundColor: "rgba(255,255,255,0.2)",
+    color: "#fff",
   },
   signupButton: {
-    backgroundColor: "#28a745",
-    padding: 14,
-    borderRadius: 10,
+    backgroundColor: "#28a745", // ✅ green matches Signin blue accent
+    padding: 15,
+    borderRadius: 12,
     alignItems: "center",
-    marginTop: 5,
+    marginTop: 8,
   },
   signupButtonText: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 17,
   },
   signinLink: {
-    marginTop: 15,
+    marginTop: 18,
     alignItems: "center",
   },
   signinText: {
-    color: "gray",
+    color: "rgba(255,255,255,0.85)",
     fontSize: 15,
   },
   signinHighlight: {
-    color: "#007BFF",
+    color: "#FFD700", // ✅ gold accent (same as Signin)
     fontWeight: "bold",
   },
 });
->>>>>>> 2e291b8a7 (MyShelf 0.1)
