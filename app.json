@@ -12,6 +12,15 @@
     },
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "0fb39d16-58a6-46e7-a11d-95e3d3cde2ba"
+      }
+    },
+    "owner": "rayleonard09",
+    "android": {
+      "package": "com.rayleonard09.myshelf"
+    }
   }
 }

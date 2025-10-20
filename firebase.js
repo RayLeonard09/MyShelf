@@ -7,7 +7,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyCjcjERd9lqjq2EtW5WRBtuCUhZpskNz9o",
   authDomain: "myshelftappbackend.firebaseapp.com",
   projectId: "myshelftappbackend",
-  storageBucket: "myshelftappbackend.appspot.com", // ✅ FIXED
+  storageBucket: "myshelftappbackend.appspot.com",
   messagingSenderId: "1063853812408",
   appId: "1:1063853812408:web:f61445a669e024855a224d"
 };

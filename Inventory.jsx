@@ -28,13 +28,20 @@ export default function App({ navigation }) {
   const [editStock, setEditStock] = useState("");
   const [editPrice, setEditPrice] = useState("");
 
-  const itemsRef = collection(db, "inventory");
   const bgImage = Asset.fromModule(require("./assets/splash.jpg")).uri;
 
   // READ
   const fetchItems = async () => {
-    const snapshot = await getDocs(itemsRef);
-    setItems(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+    try {
+      const itemsRef = collection(db, "inventory");
+      const snapshot = await getDocs(itemsRef);
+      const fetchedItems = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      console.log("Fetched items:", fetchedItems); // Debug log
+      setItems(fetchedItems);
+    } catch (error) {
+      console.error("Error fetching items:", error);
+      alert("Error fetching items. Please check your connection.");
+    }
   };
 
   useEffect(() => {
@@ -44,11 +51,22 @@ export default function App({ navigation }) {
   // CREATE
   const addItem = async () => {
     if (!name || !stock || !price) return;
-    await addDoc(itemsRef, { name, stock: Number(stock), price: Number(price) });
-    setName("");
-    setStock("");
-    setPrice("");
-    fetchItems();
+    try {
+      const itemsRef = collection(db, "inventory");
+      await addDoc(itemsRef, { 
+        name, 
+        stock: Number(stock), 
+        price: Number(price),
+        createdAt: new Date().toISOString()
+      });
+      setName("");
+      setStock("");
+      setPrice("");
+      fetchItems();
+    } catch (error) {
+      console.error("Error adding item:", error);
+      alert("Error adding item. Please try again.");
+    }
   };
 
   // OPEN EDIT MODAL
